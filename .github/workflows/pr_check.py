@@ -285,12 +285,16 @@ def check_file_scope(student_id_name: str, lab: str, changed_files: list):
 
 # ── 步骤 4：截止时间检查 ──────────────────────────────────
 
-DEADLINE_DATETIME_RE = re.compile(
+# 格式1: "截止时间：2024-03-22 18:00"
+DEADLINE_INLINE_DATETIME_RE = re.compile(
     r"截止[时日][间期][：:]\s*(\d{4}[-/]\d{1,2}[-/]\d{1,2})\s+(\d{1,2}:\d{2})"
 )
-DEADLINE_DATE_RE = re.compile(
+# 格式2: "截止时间：2024-03-22"
+DEADLINE_INLINE_DATE_RE = re.compile(
     r"截止[时日][间期][：:]\s*(\d{4}[-/]\d{1,2}[-/]\d{1,2})(?!\s*\d)"
 )
+# 格式3: "## 截止时间" 标题，下一行是 "2026-04-10，届时..."
+DEADLINE_HEADING_RE = re.compile(r"#+\s*截止时间\s*\n+\s*(\d{4}[-/]\d{1,2}[-/]\d{1,2})")
 
 
 def get_deadline(lab: str):
@@ -299,8 +303,8 @@ def get_deadline(lab: str):
     if not content:
         return None
 
-    # 优先匹配带时分的截止时间
-    m = DEADLINE_DATETIME_RE.search(content)
+    # 格式1: 带时分的行内截止时间
+    m = DEADLINE_INLINE_DATETIME_RE.search(content)
     if m:
         date_str = m.group(1).replace("/", "-")
         time_str = m.group(2)
@@ -309,8 +313,18 @@ def get_deadline(lab: str):
         except ValueError:
             pass
 
-    # 只有日期，默认 18:00
-    m = DEADLINE_DATE_RE.search(content)
+    # 格式2: 只有日期的行内截止时间
+    m = DEADLINE_INLINE_DATE_RE.search(content)
+    if m:
+        date_str = m.group(1).replace("/", "-")
+        try:
+            d = datetime.date.fromisoformat(date_str)
+            return datetime.datetime(d.year, d.month, d.day, 18, 0, 0)
+        except ValueError:
+            pass
+
+    # 格式3: 标题式截止时间（## 截止时间 + 下一行日期）
+    m = DEADLINE_HEADING_RE.search(content)
     if m:
         date_str = m.group(1).replace("/", "-")
         try:
