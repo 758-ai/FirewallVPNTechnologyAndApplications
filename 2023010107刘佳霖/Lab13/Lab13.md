@@ -801,11 +801,11 @@ sudo ip netns list
 
 | 项目 | 你的填写 |
 | :--- | :--- |
-| `siteA` 地址 |10.1.0.1 |
-| `gwA` LAN 地址 |10.1.0.100 |
+| `siteA` 地址 |10.1.0.2 |
+| `gwA` LAN 地址 |10.1.0.1 |
 | `gwA` underlay 地址 |192.0.2.1 |
 | `gwB` underlay 地址 |192.0.2.2 |
-| `gwB` LAN 地址 |10.2.0.100 |
+| `gwB` LAN 地址 |10.2.0.1|
 | `siteB` 地址 |10.2.0.2 |
 | underlay 是否连通 |是，两端公网互通，wg show 存在握手 |
 
