@@ -108,7 +108,7 @@
 ![5种违规场景截图](screenshots/25-five-weigui.png)
 
 3. **journalctl日志截图**：至少5条，包含完整字段（IN、OUT、SRC、DST、DPT）
-![journalctl日志截图](screenshots/09-journalctl.png)
+![journalctl日志截图](screenshots/09-logs-realtime.png)
 
 4. **日志统计表**：填写完整
 **任务4.4：填写日志统计表**
@@ -119,7 +119,7 @@
 | VPN→dmz:22 | 1|15 |是 |
 | internet→office |1 | 1|是 |
 | VPN其他违规 |1 | 1|是 |
-![日志统计表](screenshots/10-log-stat.png)
+![日志统计表](screenshots/10-logs-stats.png)
 
 5. **日志分析报告**（300-500字）：
    - 从日志中能获取哪些安全信息？
